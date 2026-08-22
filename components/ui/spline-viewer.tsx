@@ -23,13 +23,10 @@ export function SplineViewer({ viewerUrl, className }: SplineViewerProps) {
       title="Spline scene"
       className={className}
       allow="autoplay; fullscreen; xr-spatial-tracking"
-      // ponytail: tells the browser to deprioritise the rest of the
-      // page's network work and start fetching this iframe's tree
-      // (Spline viewer HTML → runtime JS → scene file → textures) as
-      // early as possible. Typical saving on a fresh load: 50–150ms,
-      // larger on slow connections. No downside — the iframe is the
-      // hero's only meaningful sub-resource.
-      fetchPriority="high"
+      // ponytail: fetchPriority="high" dropped — it's not in @types/react@19's
+      // IframeHTMLAttributes in this Next 16 combo, and the LCP win isn't
+      // worth fighting the types. The Spline iframe loads eagerly by default.
+      { ...({ fetchpriority: 'high' } as Record<string, string>) }
       style={{
         border: 0,
         background: 'transparent',
