@@ -1,5 +1,5 @@
 import { lead, partner, type TeamMember } from '@/lib/studio'
-import { Star } from 'lucide-react'
+import { Star, ArrowUpRight } from 'lucide-react'
 
 // ponytail: lucide-react no longer ships a GitHub glyph in this version —
 // inline an SVG so we don't add a new dependency just for one icon.
@@ -92,9 +92,10 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
           href={member.kworkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:bg-muted"
+          className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:bg-muted"
         >
-          Профиль на Kwork ↗
+          Профиль на Kwork
+          <ArrowUpRight className="size-3" />
         </a>
         {member.githubUrl && (
           <a

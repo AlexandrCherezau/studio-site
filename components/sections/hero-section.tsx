@@ -7,7 +7,7 @@ export function HeroSection() {
   return (
     // Hero fills the entire first viewport. h-svh = small viewport height so
     // mobile browser chrome (URL bar) doesn't clip content.
-    <section className="relative h-svh w-full overflow-hidden bg-black/[0.96] text-white">
+    <section className="relative h-svh w-full overflow-hidden bg-black text-white">
       {/* Background scene — fills entire viewport */}
       <SplineViewer
         viewerUrl={SCENE_VIEWER_URL}
@@ -22,23 +22,25 @@ export function HeroSection() {
       </div>
 
       {/* Bottom-left: big headline. pointer-events:none so cursor-follow
-          keeps running when cursor is over the title. */}
-      <div className="pointer-events-none absolute bottom-1/2 left-6 z-10 max-w-md p-6 md:bottom-32 md:left-10 md:p-0">
-        <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.02] tracking-tight text-transparent md:text-5xl lg:text-6xl">
+          keeps running when cursor is over the title. On mobile the headline
+          moves to the top so it doesn't fight the CTAs for vertical space. */}
+      <div className="pointer-events-none absolute left-6 right-6 top-20 z-10 md:left-10 md:right-auto md:top-auto md:bottom-32 md:max-w-md md:p-0">
+        <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.05] tracking-tight text-transparent md:text-5xl lg:text-6xl">
           Боты, парсеры, AI и SaaS под ключ
         </h1>
       </div>
 
       {/* Bottom-right: description + CTAs.
-          Lifted above the bottom watermark strip so they stay fully visible.
+          Mobile: full-width stack at the bottom, centered.
+          Desktop: right-aligned column above the watermark strip.
           Buttons are fully interactive: native pointer-events, real hover,
           real focus ring. z-20 keeps them above the gradient fade. */}
-      <div className="pointer-events-none absolute bottom-32 right-6 z-20 flex max-w-sm flex-col items-end gap-5 p-4 md:bottom-40 md:right-10 md:p-0">
-        <p className="text-pretty text-base text-white/85 md:text-lg">
+      <div className="pointer-events-none absolute inset-x-0 bottom-20 z-20 mx-auto flex max-w-sm flex-col items-stretch gap-4 px-6 md:inset-x-auto md:right-10 md:bottom-40 md:mx-0 md:max-w-sm md:items-end md:px-0">
+        <p className="text-pretty text-center text-base text-white/85 md:text-right md:text-lg">
           Fullstack-дуэт с рейтингом 5.0 на Kwork. Telegram-боты, парсеры с
           обходом защит, CRM/ERP, RAG-ассистенты, деплой на вашем сервере.
         </p>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col gap-2 md:flex-row md:flex-wrap">
           <a
             href={lead.kworkUrl}
             target="_blank"
@@ -46,7 +48,7 @@ export function HeroSection() {
             className={buttonVariants({
               size: 'lg',
               className:
-                'pointer-events-auto bg-white text-black shadow-lg shadow-black/40 hover:bg-white/90',
+                'pointer-events-auto bg-white text-black shadow-[0_8px_24px_rgba(0,0,0,0.5)] ring-1 ring-white/30 hover:bg-white/90',
             })}
           >
             Написать на Kwork <ArrowRight />
@@ -57,7 +59,7 @@ export function HeroSection() {
               size: 'lg',
               variant: 'outline',
               className:
-                'pointer-events-auto border-white/40 bg-white/10 text-white shadow-lg shadow-black/40 backdrop-blur-sm hover:bg-white/20',
+                'pointer-events-auto border-white/40 bg-black/40 text-white shadow-[0_8px_24px_rgba(0,0,0,0.5)] backdrop-blur-sm hover:bg-white/10',
             })}
           >
             Смотреть кворки
@@ -66,16 +68,15 @@ export function HeroSection() {
       </div>
 
       {/* Bottom fade keeps the text readable. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-black to-transparent md:h-24" />
 
       {/* Watermark strip — covers ONLY the Spline viewer's "Build with
-          Spline" footer (bottom-right of the iframe). Color exact
-          #0a0a0a so it merges with the section's bg-black/[0.96]. Tall
-          enough (h-12) to mask the watermark link + logo, but kept
-          narrow so it doesn't shade the CTAs (which sit at bottom-32). */}
+          Spline" footer (bottom-right of the iframe). Color matches
+          section bg (bg-black) so it merges cleanly. Tall enough (h-10)
+          to mask the watermark link + logo, kept narrow so it doesn't
+          shade the CTAs (which sit at bottom-20/bottom-40). */}
       <div
-        className="pointer-events-none absolute right-0 bottom-0 z-40 h-12 w-72"
-        style={{ background: '#0a0a0a' }}
+        className="pointer-events-none absolute right-0 bottom-0 z-40 h-10 w-72 bg-black"
       />
     </section>
   )

@@ -29,20 +29,10 @@ export function TestimonialsSection() {
   return (
     <section
       id="reviews"
-      className="bg-background relative my-20"
+      className="relative border-t border-border/60 bg-background px-6 py-20"
     >
       <div className="container relative z-10 mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.1,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          viewport={{ once: true }}
-          className="mx-auto flex max-w-[540px] flex-col items-center justify-center"
-        >
+        <div className="mx-auto flex max-w-[540px] flex-col items-center justify-center">
           <div className="flex justify-center">
             <div className="rounded-lg border py-1 px-4">Отзывы</div>
           </div>
@@ -53,7 +43,7 @@ export function TestimonialsSection() {
           <p className="mt-5 text-center opacity-75">
             Живые отзывы с Kwork — оба профиля держат рейтинг 5.0.
           </p>
-        </motion.div>
+        </div>
 
         <div className="mt-10 flex justify-center gap-6 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px]">
           <TestimonialsColumn testimonials={columns[0]} duration={14} />

@@ -9,6 +9,7 @@ import {
   Sparkles,
   Database,
   Wrench,
+  ArrowUpRight,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -22,22 +23,20 @@ function ownerLabel(owner: Service['owner']): { name: string; url: string } {
   return { name: 'оба', url: '#team' }
 }
 
-// Cards fade-up with a small stagger as the grid enters the viewport.
-// `viewport.once` so the animation doesn't replay on scroll-back.
-// `margin: '-80px'` so it fires when 80px inside, not the moment the edge
-// crosses the viewport edge — feels less twitchy.
+// ponytail: cards fade-up on enter. Stagger reduced (was 0.06 per card)
+// because each staggered spring wakes the layout/paint pipeline on scroll.
+// `viewport.once` so it doesn't replay on scroll-back.
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i: number) => ({
+  hidden: { opacity: 0, y: 16 },
+  show: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.06,
       type: 'spring',
       bounce: 0,
-      duration: 0.4,
+      duration: 0.3,
     },
-  }),
+  },
 }
 
 export function ServicesSection() {
@@ -69,7 +68,6 @@ export function ServicesSection() {
             return (
               <motion.div
                 key={service.title}
-                custom={idx}
                 variants={cardVariants}
                 className="bg-background p-6 transition-colors hover:bg-muted/40"
               >
@@ -82,9 +80,10 @@ export function ServicesSection() {
                   href={owner.url}
                   target={owner.url.startsWith('http') ? '_blank' : undefined}
                   rel={owner.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="mt-4 inline-block text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
                 >
-                  ведёт {owner.name} ↗
+                  ведёт {owner.name}
+                  <ArrowUpRight className="size-3" />
                 </a>
               </motion.div>
             )

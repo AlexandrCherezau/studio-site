@@ -1,4 +1,5 @@
 import { lead, partner, team } from '@/lib/studio'
+import { ArrowUpRight } from 'lucide-react'
 
 export function SiteFooter() {
   return (
@@ -20,9 +21,10 @@ export function SiteFooter() {
                 href={m.kworkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-foreground"
+                className="inline-flex items-center gap-1 hover:text-foreground"
               >
-                kwork / {m.handle} ↗
+                kwork / {m.handle}
+                <ArrowUpRight className="size-3" />
               </a>
             ))}
           </div>
@@ -34,9 +36,10 @@ export function SiteFooter() {
                   href={m.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-foreground"
+                  className="inline-flex items-center gap-1 hover:text-foreground"
                 >
-                  github / {m.handle} ↗
+                  github / {m.handle}
+                  <ArrowUpRight className="size-3" />
                 </a>
               ) : null,
             )}

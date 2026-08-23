@@ -10,14 +10,11 @@ export type TestimonialItem = {
   image?: string
 }
 
-// ponytail: TestimonialsColumn duplicates its list COPIES times and
-// animates translateY -50% for the seamless loop. The trick to reading
-// as "endless" is enough scroll distance between same-content passes —
-// 2 copies (the demo default) only gave 6 items per column reset cycle,
-// which feels slow / repetitive with our 7-item source list. COPIES=5
-// triples the on-screen distance; combined with shorter durations it
-// flows continuously instead of stepping.
-const COPIES = 5
+// ponytail: 2 copies is enough for a seamless loop with our 7-item source
+// list. 5 copies tripled the DOM (15 cards per column instead of 3) and
+// triggered layout work on every scroll frame — biggest CPU sink in the
+// testimonials section after the Spline iframe. reduce-motion → 1 copy.
+const COPIES = 2
 
 export const TestimonialsColumn = (props: {
   className?: string
