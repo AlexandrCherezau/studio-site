@@ -205,3 +205,66 @@
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* ────────────────────────────────────────────────────────────────────
+   Scroll-driven animations (CSS spec).
+   Spec: https://scroll-driven-animations.style/
+   Why: runs entirely OFF the main thread — fixes Taron's "browser
+   dies on scroll" complaint by replacing motion/react scroll hooks
+   (which wake JS on every scroll event) with browser-native timeline
+   interpolation. Falls back to static state on browsers without
+   @supports (Safari < 17.4, Firefox as of 2026) — the markup is
+   valid without animation, just nothing moves.
+   ──────────────────────────────────────────────────────────────────── */
+
+/* 1. Reading progress bar — replaces the previous useScroll+useSpring
+      motion/react implementation. scaleX 0 → 1 driven by scroll(root). */
+@supports (animation-timeline: scroll()) {
+  @keyframes scroll-progress-anim {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  .scroll-progress-bar {
+    animation: scroll-progress-anim linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+/* 2. Header shadow — fade in within the first 8px of scroll, fade out
+      when scrolled back up. Subtle "you're past the hero" UX cue. */
+@supports (animation-timeline: scroll()) {
+  @keyframes header-shadow-anim {
+    from { box-shadow: 0 -1px 0 0 transparent inset; }
+    to   { box-shadow: 0 -1px 0 0 rgb(0 0 0 / 0.08) inset; }
+  }
+  .scroll-header-shadow {
+    animation: header-shadow-anim linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 8px;
+  }
+}
+
+/* 3. Section reveal — fade-up as the element enters the viewport.
+      Replaces the whileInView motion/react stagger in services-section.
+      view() ties the timeline to the element's position in the scrollport
+      instead of root scroll, so each card animates as IT crosses the
+      viewport, not the page. */
+@supports (animation-timeline: view()) {
+  @keyframes view-reveal {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .view-reveal {
+    animation: view-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress-bar,
+  .scroll-header-shadow,
+  .view-reveal {
+    animation: none !important;
+  }
+}

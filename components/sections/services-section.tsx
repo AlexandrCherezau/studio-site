@@ -1,6 +1,3 @@
-'use client'
-
-import { motion, type Variants } from 'motion/react'
 import { services, lead, partner, type Service } from '@/lib/studio'
 import {
   Bot,
@@ -22,17 +19,6 @@ function ownerLabel(owner: Service['owner']): { name: string; url: string } {
   return { name: 'lead + partner', url: '#team' }
 }
 
-// ponytail: cards fade-up on enter. No stagger — each staggered spring
-// woke the layout/paint pipeline on scroll (Taron: "browser dies").
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', bounce: 0, duration: 0.3 },
-  },
-}
-
 export function ServicesSection() {
   return (
     <section
@@ -50,25 +36,20 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, idx) => {
             const Icon = ICONS[idx] ?? Sparkles
             const owner = ownerLabel(service.owner)
             return (
-              <motion.div
+              // ponytail: `view-reveal` is a CSS scroll-driven animation
+              // (see globals.css) that fades the card up as IT enters
+              // the viewport. Replaces motion/react's whileInView which
+              // ran an IntersectionObserver on the main thread. Each
+              // card animates independently as it scrolls into view;
+              // no JS wake per scroll frame.
+              <div
                 key={service.title}
-                variants={cardVariants}
-                // ponytail: per-card border + rounded corners replace the
-                // old hairline-grid pattern (gap-px + bg-border/60), which
-                // ÆLUA flagged as visually busy. Hover is border-color
-                // only — no transform, no shadow (perf: keeps the
-                // compositor out of the paint pipeline on weak GPUs).
-                className="group flex flex-col rounded-xl border border-border/60 bg-background p-6 transition-colors hover:border-foreground/30"
+                className="view-reveal group flex flex-col rounded-xl border border-border/60 bg-background p-6 transition-colors hover:border-foreground/30"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-foreground/[0.04] ring-1 ring-foreground/[0.06]">
@@ -94,10 +75,10 @@ export function ServicesSection() {
                 >
                   Открыть в Kwork
                 </a>
-              </motion.div>
+              </div>
             )
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
