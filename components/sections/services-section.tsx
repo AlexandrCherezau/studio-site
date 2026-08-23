@@ -9,7 +9,6 @@ import {
   Sparkles,
   Database,
   Wrench,
-  ArrowUpRight,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -91,10 +90,9 @@ export function ServicesSection() {
                   href={owner.url}
                   target={owner.url.startsWith('http') ? '_blank' : undefined}
                   rel={owner.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="mt-auto inline-flex items-center gap-1 pt-5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className="mt-auto inline-block pt-5 text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
                 >
                   Открыть в Kwork
-                  <ArrowUpRight className="size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </motion.div>
             )
