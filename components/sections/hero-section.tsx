@@ -26,7 +26,7 @@ export function HeroSection() {
           moves to the top so it doesn't fight the CTAs for vertical space. */}
       <div className="pointer-events-none absolute left-6 right-6 top-20 z-10 md:left-10 md:right-auto md:top-auto md:bottom-32 md:max-w-md md:p-0">
         <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.05] tracking-tight text-transparent md:text-5xl lg:text-6xl">
-          Боты, парсеры, AI и SaaS под ключ
+          Бот, парсер или SaaS — за 14 дней, не за 3 месяца
         </h1>
       </div>
 
@@ -37,8 +37,9 @@ export function HeroSection() {
           real focus ring. z-20 keeps them above the gradient fade. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-20 z-20 mx-auto flex max-w-sm flex-col items-stretch gap-4 px-6 md:inset-x-auto md:right-10 md:bottom-40 md:mx-0 md:max-w-sm md:items-end md:px-0">
         <p className="text-pretty text-center text-base text-white/85 md:text-right md:text-lg">
-          Fullstack-дуэт с рейтингом 5.0 на Kwork. Telegram-боты, парсеры с
-          обходом защит, CRM/ERP, RAG-ассистенты, деплой на вашем сервере.
+          Два fullstack-разработчика с рейтингом 5.0 на Kwork. Без менеджеров
+          и подрядчиков — общаетесь напрямую с теми, кто пишет код. Деплой
+          на вашем сервере, исходники — ваши.
         </p>
         <div className="flex flex-col gap-2 md:flex-row md:flex-wrap">
           <a
