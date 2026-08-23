@@ -24,7 +24,7 @@ export function HeroSection() {
       {/* Bottom-left: big headline. pointer-events:none so cursor-follow
           keeps running when cursor is over the title. */}
       <div className="pointer-events-none absolute bottom-1/2 left-6 z-10 max-w-md p-6 md:bottom-32 md:left-10 md:p-0">
-        <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.02] text-transparent md:text-5xl lg:text-6xl">
+        <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.02] tracking-tight text-transparent md:text-5xl lg:text-6xl">
           Боты, парсеры, AI и SaaS под ключ
         </h1>
       </div>

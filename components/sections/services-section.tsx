@@ -33,8 +33,9 @@ const cardVariants: Variants = {
     y: 0,
     transition: {
       delay: i * 0.06,
-      duration: 0.5,
-      ease: 'easeOut',
+      type: 'spring',
+      bounce: 0,
+      duration: 0.4,
     },
   }),
 }

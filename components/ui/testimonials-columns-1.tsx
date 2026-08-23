@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 
 export type TestimonialItem = {
   text: string
@@ -24,19 +24,28 @@ export const TestimonialsColumn = (props: {
   testimonials: TestimonialItem[]
   duration?: number
 }) => {
+  // apple-design §14: skip the infinite marquee for reduced-motion users —
+  // a slow looping oscillation near 0.2 Hz is exactly what the guidelines
+  // single out. Render one copy, no animation.
+  const shouldReduceMotion = useReducedMotion()
+  const copies = shouldReduceMotion ? 1 : COPIES
   return (
     <div className={props.className}>
       <motion.div
-        animate={{ translateY: '-50%' }}
-        transition={{
-          duration: props.duration || 10,
-          repeat: Infinity,
-          ease: 'linear',
-          repeatType: 'loop',
-        }}
+        animate={shouldReduceMotion ? undefined : { translateY: '-50%' }}
+        transition={
+          shouldReduceMotion
+            ? undefined
+            : {
+                duration: props.duration || 10,
+                repeat: Infinity,
+                ease: 'linear',
+                repeatType: 'loop',
+              }
+        }
         className="flex flex-col gap-6 bg-background pb-6"
       >
-        {new Array(COPIES).fill(0).map((_, index) => (
+        {new Array(copies).fill(0).map((_, index) => (
           <React.Fragment key={index}>
             {props.testimonials.map((t, i) => (
               <div
