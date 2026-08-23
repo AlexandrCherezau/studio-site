@@ -177,6 +177,20 @@
   }
 }
 
+/* ponytail: spline skeleton pulse — lives in globals.css instead of
+   tailwind config because we use it in exactly one place and pulling
+   in @keyframes/animate utilities for one element isn't worth the
+   indirection. opacity-only animation, compositor-only, zero main-thread. */
+@keyframes spline-skeleton-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #spline-placeholder {
+    animation: none !important;
+  }
+}
+
 /* ponytail: hero CTA strip area — kill all browser-default selection,
    tap highlight, and focus outline so the masked buttons under the
    bottom strip don't show any visual feedback when clicked. */
