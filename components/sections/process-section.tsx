@@ -7,7 +7,7 @@ export function ProcessSection() {
       className="relative border-t border-border/60 bg-background px-6 py-20"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="view-reveal mb-12 max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Как устроена работа
           </h2>
@@ -20,7 +20,7 @@ export function ProcessSection() {
           {process.map((item) => (
             <li
               key={item.step}
-              className="rounded-xl border border-border/60 bg-background p-6"
+              className="view-reveal rounded-xl border border-border/60 bg-background p-6"
             >
               <span className="font-mono text-xs text-muted-foreground">
                 {item.step}

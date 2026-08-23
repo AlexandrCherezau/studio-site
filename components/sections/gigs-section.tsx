@@ -5,7 +5,7 @@ export function GigsSection() {
   return (
     <section id="work" className="relative border-t border-border/60 bg-background px-6 py-20">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="view-reveal mb-12 max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Кворки
           </h2>
@@ -17,7 +17,7 @@ export function GigsSection() {
 
         <ul className="grid gap-3">
           {gigs.map((gig) => (
-            <li key={gig.title}>
+            <li key={gig.title} className="view-reveal">
               <a
                 href={gig.kworkUrl}
                 target="_blank"

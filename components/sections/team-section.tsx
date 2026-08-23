@@ -20,9 +20,10 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
   return (
     <article
       className={
-        featured
+        'h-full ' +
+        (featured
           ? 'rounded-2xl border border-border/60 bg-background p-8 md:p-10'
-          : 'rounded-2xl border border-border/60 bg-background p-6 md:p-8'
+          : 'rounded-2xl border border-border/60 bg-background p-6 md:p-8')
       }
     >
       <div className="flex items-start justify-between gap-4">
@@ -116,7 +117,7 @@ export function TeamSection() {
   return (
     <section id="team" className="relative border-t border-border/60 bg-background px-6 py-20">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="view-reveal mb-12 max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Кто делает работу
           </h2>
@@ -127,10 +128,10 @@ export function TeamSection() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-5">
-          <div className="lg:col-span-3">
+          <div className="view-reveal lg:col-span-3">
             <MemberCard member={lead} featured />
           </div>
-          <div className="lg:col-span-2">
+          <div className="view-reveal lg:col-span-2">
             <MemberCard member={partner} featured={false} />
           </div>
         </div>

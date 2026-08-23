@@ -7,7 +7,7 @@ export function HeroSection() {
   return (
     // Hero fills the entire first viewport. h-svh = small viewport height so
     // mobile browser chrome (URL bar) doesn't clip content.
-    <section className="relative h-svh w-full overflow-hidden bg-black text-white">
+    <section className="hero-parallax relative h-svh w-full overflow-hidden bg-black text-white">
       {/* Background scene — fills entire viewport */}
       <SplineViewer
         viewerUrl={SCENE_VIEWER_URL}

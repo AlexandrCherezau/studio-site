@@ -230,41 +230,67 @@
   }
 }
 
-/* 2. Header shadow — fade in within the first 8px of scroll, fade out
-      when scrolled back up. Subtle "you're past the hero" UX cue. */
+/* 2. Header shadow — fades in over the first 80px of scroll (wide enough
+      that normal-scroll users notice it) and back out when scrolled up.
+      Uses both inset border-shadow AND drop-shadow for visible depth on
+      light AND dark backgrounds. */
 @supports (animation-timeline: scroll()) {
   @keyframes header-shadow-anim {
-    from { box-shadow: 0 -1px 0 0 transparent inset; }
-    to   { box-shadow: 0 -1px 0 0 rgb(0 0 0 / 0.08) inset; }
+    from {
+      box-shadow:
+        0 1px 0 0 transparent inset,
+        0 1px 0 0 transparent;
+    }
+    to {
+      box-shadow:
+        0 1px 0 0 rgb(0 0 0 / 0.08) inset,
+        0 4px 12px -2px rgb(0 0 0 / 0.08);
+    }
   }
   .scroll-header-shadow {
     animation: header-shadow-anim linear both;
     animation-timeline: scroll(root);
-    animation-range: 0 8px;
+    animation-range: 0 80px;
   }
 }
 
-/* 3. Section reveal — fade-up as the element enters the viewport.
-      Replaces the whileInView motion/react stagger in services-section.
-      view() ties the timeline to the element's position in the scrollport
-      instead of root scroll, so each card animates as IT crosses the
-      viewport, not the page. */
+/* 3. Section reveal — fade-up + scale as element crosses the viewport.
+      travel = 40px so the motion is unmissable. Range = entry 5% to
+      cover 60% so the animation plays over a meaningful slice of the
+      scroll, not just a one-frame pop. */
 @supports (animation-timeline: view()) {
   @keyframes view-reveal {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(40px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   .view-reveal {
     animation: view-reveal linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 100%;
+    animation-range: entry 5% cover 60%;
+  }
+}
+
+/* 4. Hero parallax — the entire hero translates up slower than scroll,
+      so as the user scrolls past it the 3D scene + content drift
+      noticeably upward, creating depth. The sticky header (z-40)
+      covers the top so the translation looks intentional. */
+@supports (animation-timeline: scroll()) {
+  @keyframes hero-parallax {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-15%); }
+  }
+  .hero-parallax {
+    animation: hero-parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100vh;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scroll-progress-bar,
   .scroll-header-shadow,
-  .view-reveal {
+  .view-reveal,
+  .hero-parallax {
     animation: none !important;
   }
 }
