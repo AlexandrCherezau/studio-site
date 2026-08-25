@@ -3,22 +3,24 @@ import { buttonVariants } from '@/components/ui/button'
 
 export function ContactSection() {
   return (
-    // ponytail: signature finale — inverts the page to dark after a
-    // run of light/muted sections. Apple-style "stage moment" — the
-    // reader knows this is the call-to-action because the whole
-    // visual register shifts.
+    // ponytail: signature finale — elevated card on the page's
+    // background. Uses `bg-foreground/[0.04]` (4% of the text-color
+    // token, which adapts) so the section reads as a raised card in
+    // BOTH light and dark themes — no harsh inversion that fights
+    // a dark-mode reader's eye. Border uses the same token at
+    // lower opacity to keep edges visible without a hard line.
     <section
       id="contact"
-      className="relative bg-foreground px-6 py-24 text-background md:py-32"
+      className="relative bg-foreground/[0.04] px-6 py-24 md:py-32"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <div className="view-reveal font-mono text-xs uppercase tracking-[0.2em] text-background/60">
+        <div className="view-reveal font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
           06 — Контакт
         </div>
-        <h2 className="view-reveal mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
+        <h2 className="view-reveal mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-6xl">
           Готовы начать?
         </h2>
-        <p className="view-reveal mx-auto mt-6 max-w-xl text-base text-background/75 md:text-lg">
+        <p className="view-reveal mx-auto mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
           Напишите в личку на Kwork — ответим в течение дня с оценкой
           сроков и стоимости. Если задача типовая — берите кворк со
           страницы выше.
@@ -31,7 +33,7 @@ export function ContactSection() {
             className={buttonVariants({
               size: 'lg',
               className:
-                'bg-background text-foreground hover:bg-background/90',
+                'bg-foreground text-background hover:bg-foreground/90',
             })}
           >
             Написать @{lead.handle}
@@ -44,7 +46,7 @@ export function ContactSection() {
               size: 'lg',
               variant: 'outline',
               className:
-                'border-background/30 bg-transparent text-background hover:bg-background/10',
+                'border-foreground/30 bg-transparent text-foreground hover:bg-foreground/10',
             })}
           >
             Написать @{partner.handle}
