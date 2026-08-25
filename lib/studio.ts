@@ -257,66 +257,65 @@ export type Portfolio = {
   client: string
   month: string
   stack: string[]
-  type: 'parser' | 'shop' | 'bot' | 'infra'
-  scope: number
-  recency: number
-  desc?: string
+  category: string
+  scope: string
+  preview: string
+  previewType: 'webp' | 'jpg'
   kworkUrl: string
 }
 
 // ponytail: real Kwork portfolio items, copy of the actual titles
-// from the Kwork profiles. Each dot on the constellation canvas
-// routes to its original case-study page. Axes (scope, recency)
-// in 0..100 — recency is months-since-ship mirrored so newer
-// projects sit HIGHER on the canvas (matches the "объём и
-// свежесть" framing in the section heading).
+// from the Kwork profiles + scraped og:image previews. Each card
+// in the portfolio grid links to the case-study page on Kwork.
+// `preview` is the path under /portfolio/ that Next serves as a
+// static asset (downloaded from the kwork CDN, optim).
 export const portfolio: Portfolio[] = [
   {
     id: 'k23569286',
-    title: 'Бот-парсер',
+    title: 'Telegram-бот-парсер Amazon',
     client: 'Kwork',
     month: 'Aug 2026',
     stack: ['Python', 'aiogram', 'Scrapy'],
-    type: 'bot',
-    scope: 30,
-    recency: 95,
-    desc: 'Парсер + автоответчик в одном боте',
+    category: 'бот / парсер',
+    scope: 'Маленький бот · 2-3 недели',
+    preview: '/portfolio/23569286.webp',
+    previewType: 'webp',
     kworkUrl: 'https://kwork.ru/portfolio/23569286',
   },
   {
     id: 'k22552936',
-    title: 'Сайт',
+    title: 'Сайт для собственной IDE — Piqle',
     client: 'Kwork',
     month: 'May 2026',
     stack: ['Next.js', 'TypeScript', 'Tailwind'],
-    type: 'shop',
-    scope: 55,
-    recency: 60,
-    desc: 'Лендинг с интеграцией amoCRM',
+    category: 'лендинг',
+    scope: 'Mid-size сайт · 3-4 недели',
+    preview: '/portfolio/22552936.webp',
+    previewType: 'webp',
     kworkUrl: 'https://kwork.ru/portfolio/22552936',
   },
   {
     id: 'k23569177',
-    title: 'Сайт для сервера PoligPig',
+    title: 'Сайт POLITPIG — Minecraft-сервер',
     client: 'Kwork',
     month: 'Aug 2026',
     stack: ['Next.js', 'Tailwind', 'Vercel'],
-    type: 'shop',
-    scope: 70,
-    recency: 95,
-    desc: 'Игровой сервер + каталог + донат',
+    category: 'игровой лендинг',
+    scope: 'Каталог + донат · 2-3 недели',
+    preview: '/portfolio/23569177.webp',
+    previewType: 'webp',
     kworkUrl: 'https://kwork.ru/portfolio/23569177',
   },
   {
     id: 'k23570036',
-    title: 'Сайт для бренда одежды',
+    title: 'Сайт для бренда одежды — VÉLÈNE',
     client: 'Kwork',
     month: 'Aug 2026',
     stack: ['Next.js', 'Tailwind', 'Stripe'],
-    type: 'shop',
-    scope: 85,
-    recency: 95,
-    desc: 'Каталог + корзина + онлайн-оплата',
+    category: 'e-commerce',
+    scope: 'Каталог + корзина + оплата',
+    preview: '/portfolio/23570036.jpg',
+    previewType: 'jpg',
     kworkUrl: 'https://kwork.ru/portfolio/23570036',
   },
 ]
