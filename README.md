@@ -1,10 +1,12 @@
 # site3d — студия Александра и Ильи
 
-![preview](./public/preview.png)
+![hero](./public/hero.gif)
 
 Лендинг двух-person dev-студии (fullstack + AI) на Next.js. Цель страницы — превращать визитёров в заказчиков на Kwork.
 
-**Live**: [site3d-rrrg23886-7973s-projects.vercel.app](https://site3d-rrrg23886-7973s-projects.vercel.app/)
+[**Открыть live →**](https://site3d-rrrg23886-7973s-projects.vercel.app/)
+
+[Полный скриншот страницы](./public/preview.png) · [Hero-блок с курсором-фолоу робота](./public/hero.gif)
 
 ---
 
