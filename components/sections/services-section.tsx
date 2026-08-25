@@ -21,49 +21,46 @@ function ownerLabel(owner: Service['owner']): { name: string; url: string } {
 
 export function ServicesSection() {
   return (
+    // ponytail: bg-background + border-t + py-24 — first content section
+    // sits on white. Border separates from the marquee above.
     <section
       id="services"
-      className="relative border-t border-border/60 bg-background px-6 py-20"
+      className="relative border-t border-border/60 bg-background px-6 py-24 md:py-32"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="view-reveal mb-12 max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Что делаем
+        <div className="view-reveal mb-16 max-w-2xl">
+          <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            01 — Что делаем
+          </div>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+            Шесть направлений, под&nbsp;которыми есть живые заказы
           </h2>
-          <p className="mt-3 text-muted-foreground">
-            Услуги, под которыми есть живые заказы на Kwork. Имя у каждой
-            услуги — кто из нас её закрывает.
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            Имя у каждой услуги — кто из нас её закрывает. Никаких
+            «менеджер уточнит» — общаетесь напрямую с тем, кто пишет код.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-border/60 bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, idx) => {
             const Icon = ICONS[idx] ?? Sparkles
             const owner = ownerLabel(service.owner)
             return (
-              // ponytail: `view-reveal` is a CSS scroll-driven animation
-              // (see globals.css) that fades the card up as IT enters
-              // the viewport. Replaces motion/react's whileInView which
-              // ran an IntersectionObserver on the main thread. Each
-              // card animates independently as it scrolls into view;
-              // no JS wake per scroll frame.
               <div
                 key={service.title}
-                className="view-reveal group flex flex-col rounded-xl border border-border/60 bg-background p-6 transition-colors hover:border-foreground/30"
+                className="view-reveal group relative flex flex-col bg-background p-7 transition-colors hover:bg-foreground/[0.02]"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-foreground/[0.04] ring-1 ring-foreground/[0.06]">
-                    <Icon className="size-5 text-foreground/80" />
-                  </div>
-                  <span className="rounded-full border border-border/60 bg-muted/30 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <div className="flex items-center justify-between">
+                  <Icon className="size-5 text-foreground/70" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                     {owner.name}
                   </span>
                 </div>
 
-                <h3 className="mt-5 text-base font-medium leading-snug">
+                <h3 className="mt-12 text-lg font-medium leading-snug">
                   {service.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {service.description}
                 </p>
 
@@ -71,9 +68,10 @@ export function ServicesSection() {
                   href={owner.url}
                   target={owner.url.startsWith('http') ? '_blank' : undefined}
                   rel={owner.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="mt-auto inline-block pt-5 text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  className="mt-8 inline-flex items-center gap-2 text-xs font-medium text-foreground underline-offset-4 transition-opacity hover:opacity-70"
                 >
                   Открыть в Kwork
+                  <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
                 </a>
               </div>
             )

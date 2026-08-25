@@ -1,36 +1,51 @@
 import { gigs } from '@/lib/studio'
-import { ArrowRight } from 'lucide-react'
 
 export function GigsSection() {
   return (
-    <section id="work" className="relative border-t border-border/60 bg-background px-6 py-20">
+    // ponytail: editorial list instead of cards. Stripe-pricing-tier
+    // feel — hairline dividers, price + title on one line, Kwork
+    // link as the right-side affordance. No card chrome.
+    <section
+      id="work"
+      className="relative bg-background px-6 py-24 md:py-28"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="view-reveal mb-12 max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Кворки
+        <div className="view-reveal mb-16 max-w-2xl">
+          <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            03 — Кворки
+          </div>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+            Готовые предложения с&nbsp;фиксированной ценой
           </h2>
-          <p className="mt-3 text-muted-foreground">
-            Готовые предложения с фиксированной ценой. Кликайте — откроется на
-            Kwork.
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            Клик — откроется страница кворка на Kwork, можно сразу
+            оформить заказ.
           </p>
         </div>
 
-        <ul className="grid gap-3">
+        <ul className="view-reveal divide-y divide-border/60 border-y border-border/60">
           {gigs.map((gig) => (
-            <li key={gig.title} className="view-reveal">
+            <li key={gig.title}>
               <a
                 href={gig.kworkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-4 rounded-xl border border-border/60 bg-background p-4 transition-colors hover:border-foreground/30 hover:bg-muted/30"
+                className="group flex items-baseline justify-between gap-6 py-5 transition-colors hover:bg-muted/30"
               >
-                <div className="flex items-center gap-4">
-                  <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                <div className="flex min-w-0 items-baseline gap-6">
+                  <span className="w-20 shrink-0 font-mono text-sm tabular-nums text-foreground md:w-24">
                     {gig.price}
                   </span>
-                  <span className="text-sm font-medium">{gig.title}</span>
+                  <span className="text-base font-medium md:text-lg">
+                    {gig.title}
+                  </span>
                 </div>
-                <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+                <span
+                  aria-hidden
+                  className="shrink-0 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors group-hover:text-foreground"
+                >
+                  открыть →
+                </span>
               </a>
             </li>
           ))}

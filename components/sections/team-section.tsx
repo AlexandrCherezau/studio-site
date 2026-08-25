@@ -18,26 +18,15 @@ function GithubIcon({ className }: { className?: string }) {
 
 function MemberCard({ member, featured }: { member: TeamMember; featured: boolean }) {
   return (
-    <article
-      className={
-        'h-full ' +
-        (featured
-          ? 'rounded-2xl border border-border/60 bg-background p-8 md:p-10'
-          : 'rounded-2xl border border-border/60 bg-background p-6 md:p-8')
-      }
-    >
+    // ponytail: team cards use a different visual language than services
+    // cards — no per-card border, a thin top hairline + a soft inset
+    // shadow instead. Apple HIG "depth via layering" rather than borders.
+    <article className="h-full rounded-2xl bg-background p-8 ring-1 ring-foreground/[0.06] md:p-10">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-3">
-            <h3 className="text-2xl font-semibold tracking-tight">
-              {member.name}
-            </h3>
-            {featured && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                Lead
-              </span>
-            )}
-          </div>
+          <h3 className="text-2xl font-semibold tracking-tight">
+            {member.name}
+          </h3>
           <a
             href={member.kworkUrl}
             target="_blank"
@@ -47,42 +36,40 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
             @{member.handle}
           </a>
         </div>
-        <div className="flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2 py-1 text-xs">
-          <Star className="size-3 fill-current text-yellow-500" />
+        <div className="flex items-center gap-1 font-mono text-xs">
+          <Star className="size-3 fill-current" />
           <span className="font-medium">{member.stats.rating.toFixed(1)}</span>
           <span className="text-muted-foreground">
-            · {member.stats.reviews} отзывов
+            · {member.stats.reviews}
           </span>
         </div>
       </div>
 
-      <p className="mt-4 text-sm font-medium text-foreground/90">
+      <p className="mt-6 text-base font-medium text-foreground/90">
         {member.tagline}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
         {member.bio}
       </p>
 
-      <ul className="mt-5 grid gap-1.5 text-xs text-muted-foreground sm:grid-cols-2">
+      <ul className="mt-6 grid gap-1.5 text-xs text-muted-foreground sm:grid-cols-2">
         {member.stack.map((tech) => (
           <li key={tech} className="flex items-start gap-2">
-            <span className="mt-1 size-1 shrink-0 rounded-full bg-foreground/40" />
+            <span className="mt-1.5 size-1 shrink-0 rounded-full bg-foreground/30" />
             <span>{tech}</span>
           </li>
         ))}
       </ul>
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border/60 pt-5 text-xs text-muted-foreground">
-        <span>{member.since}</span>
-        <span>·</span>
-        <span>{member.stats.orders} заказов выполнено</span>
-        <span>·</span>
-        <span>{member.stats.completion}% сдано успешно</span>
-        <span>·</span>
+      <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/40 pt-5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+        <span>{member.stats.orders} заказов</span>
+        <span aria-hidden>·</span>
+        <span>{member.stats.completion}% сдано</span>
+        <span aria-hidden>·</span>
         <span>{member.stats.onTime}% вовремя</span>
         {member.stats.repeat > 0 && (
           <>
-            <span>·</span>
+            <span aria-hidden>·</span>
             <span>{member.stats.repeat}% повторных</span>
           </>
         )}
@@ -93,7 +80,7 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
           href={member.kworkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:bg-muted"
+          className="inline-flex items-center text-sm font-medium underline-offset-4 hover:underline"
         >
           Профиль на Kwork
         </a>
@@ -102,9 +89,9 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
             href={member.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:bg-muted"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
-            <GithubIcon className="size-3" />
+            <GithubIcon className="size-3.5" />
             GitHub
           </a>
         )}
@@ -115,15 +102,23 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
 
 export function TeamSection() {
   return (
-    <section id="team" className="relative border-t border-border/60 bg-background px-6 py-20">
+    // ponytail: bg-muted/30 alternates with services above (bg-background)
+    // — gives the page a two-tone rhythm without adding a hard border.
+    <section
+      id="team"
+      className="relative bg-muted/30 px-6 py-24 md:py-32"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="view-reveal mb-12 max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Кто делает работу
+        <div className="view-reveal mb-16 max-w-2xl">
+          <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            02 — Команда
+          </div>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+            Два человека, рейтинг 5.0, ноль посредников
           </h2>
-          <p className="mt-3 text-muted-foreground">
-            Маленькая команда — два fullstack-разработчика с рейтингом 5.0 на
-            Kwork. Работаем вместе, отвечаем лично, деплоим на вашем сервере.
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            Работаем вместе, отвечаем лично, деплоим на вашем сервере.
+            Исходники и инфраструктура — ваши, не подписка на чужой SaaS.
           </p>
         </div>
 
