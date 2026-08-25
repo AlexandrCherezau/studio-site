@@ -75,21 +75,35 @@ function MemberCard({ member, featured }: { member: TeamMember; featured: boolea
         )}
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-2">
         <a
           href={member.kworkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center text-sm font-medium underline-offset-4 hover:underline"
+          className="inline-flex items-center gap-1.5 rounded-md border border-foreground/20 bg-foreground/[0.06] px-3 py-1.5 text-xs font-medium text-foreground transition-all duration-150 hover:border-foreground/40 hover:bg-foreground/[0.12]"
         >
           Профиль на Kwork
+          <svg
+            width="9"
+            height="9"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            className="transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          >
+            <path d="M3 9 L9 3 M5 3 L9 3 L9 7" />
+          </svg>
         </a>
         {member.githubUrl && (
           <a
             href={member.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all duration-150 hover:border-foreground/30 hover:bg-muted/50 hover:text-foreground"
           >
             <GithubIcon className="size-3.5" />
             GitHub

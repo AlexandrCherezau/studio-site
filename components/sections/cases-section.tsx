@@ -73,8 +73,25 @@ export function CasesSection() {
                       </span>
                     ))}
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors group-hover:text-foreground">
-                    открыть на Kwork →
+                  <span
+                    aria-hidden
+                    className="inline-flex items-center gap-1.5 rounded-md border border-foreground/20 bg-foreground/[0.06] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground transition-all duration-150 group-hover:border-foreground/40 group-hover:bg-foreground/[0.12]"
+                  >
+                    <svg
+                      width="9"
+                      height="9"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                      className="transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    >
+                      <path d="M3 9 L9 3 M5 3 L9 3 L9 7" />
+                    </svg>
+                    на Kwork
                   </span>
                 </div>
               </div>
