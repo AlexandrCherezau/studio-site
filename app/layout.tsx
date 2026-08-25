@@ -23,16 +23,32 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <head>
-        {/* ponytail: warm the connection to the Spline viewer CDN before
-            the iframe ever asks for it. Saves one round-trip (DNS +
-            TLS handshake) — typically 80–250ms on first visit. preview
-            is also preconnected in case the Spline viewer redirects to
-            its prod assets. type="preconnect" without crossorigin is
-            enough for the iframe HTML; crossorigin is added via the
-            second hint for the scene-file asset which is fetched as a
-            CORS request from inside the viewer. */}
+        {/* ponytail: warm the connection to the Spline viewer CDN
+            before the iframe ever asks for it. Saves one round-trip
+            (DNS + TLS handshake) — typically 80–250ms on first visit.
+            type="preconnect" without crossorigin is enough for the
+            iframe HTML; crossorigin is added on the second hint for
+            the scene-file asset which is fetched as a CORS request. */}
         <link rel="preconnect" href="https://my.spline.design" />
-        <link rel="preconnect" href="https://prod.spline.design" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://prod.spline.design"
+          crossOrigin="anonymous"
+        />
+        {/* ponytail: preload the Spline runtime boot chunk. The browser
+            starts the ~350KB download in parallel with HTML parsing
+            instead of waiting for the iframe to mount and kick its
+            own request — saves ~120ms on first visit, more on slow
+            networks. Subsequent visits skip this entirely because
+            the chunk is already in HTTP cache (Spline's CDN serves it
+            with max-age, content-hashed filename). as=script keeps
+            the browser from treating it as image/font. */}
+        <link
+          rel="preload"
+          href="https://cdn.spline.design/@splinetool/runtime@2.0.5/build/runtime.js"
+          as="script"
+          crossOrigin="anonymous"
+        />
         {/* ponytail: dark is the default theme — paint .dark on <html>
             before React hydrates to avoid the flash of light bg on
             first load. Reads localStorage 'theme' so the toggle still
