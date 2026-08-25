@@ -15,7 +15,7 @@ export function ContactSection() {
     >
       <div className="mx-auto max-w-3xl text-center">
         <div className="view-reveal font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          06 — Контакт
+          07 — Контакт
         </div>
         <h2 className="view-reveal mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-6xl">
           Готовы начать?

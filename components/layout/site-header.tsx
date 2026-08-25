@@ -7,6 +7,7 @@ const NAV = [
   { href: '#team', label: 'Команда' },
   { href: '#work', label: 'Кворки' },
   { href: '#reviews', label: 'Отзывы' },
+  { href: '#cases', label: 'Кейсы' },
   { href: '#process', label: 'Процесс' },
   { href: '#contact', label: 'Контакт' },
 ] as const

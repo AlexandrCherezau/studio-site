@@ -11,7 +11,7 @@ export function ProcessSection() {
       <div className="mx-auto max-w-6xl">
         <div className="view-reveal mb-16 max-w-2xl">
           <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            05 — Процесс
+            06 — Процесс
           </div>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
             Как устроена работа

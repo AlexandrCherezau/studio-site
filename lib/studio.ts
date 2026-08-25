@@ -251,6 +251,76 @@ export const testimonials: Testimonial[] = [
   },
 ]
 
+export type Portfolio = {
+  id: string
+  title: string
+  client: string
+  month: string
+  stack: string[]
+  type: 'parser' | 'shop' | 'bot' | 'infra'
+  scope: number
+  recency: number
+  desc?: string
+  kworkUrl: string
+}
+
+// ponytail: real Kwork portfolio items, copy of the actual titles
+// from the Kwork profiles. Each dot on the constellation canvas
+// routes to its original case-study page. Axes (scope, recency)
+// in 0..100 — recency is months-since-ship mirrored so newer
+// projects sit HIGHER on the canvas (matches the "объём и
+// свежесть" framing in the section heading).
+export const portfolio: Portfolio[] = [
+  {
+    id: 'k23569286',
+    title: 'Бот-парсер',
+    client: 'Kwork',
+    month: 'Aug 2026',
+    stack: ['Python', 'aiogram', 'Scrapy'],
+    type: 'bot',
+    scope: 30,
+    recency: 95,
+    desc: 'Парсер + автоответчик в одном боте',
+    kworkUrl: 'https://kwork.ru/portfolio/23569286',
+  },
+  {
+    id: 'k22552936',
+    title: 'Сайт',
+    client: 'Kwork',
+    month: 'May 2026',
+    stack: ['Next.js', 'TypeScript', 'Tailwind'],
+    type: 'shop',
+    scope: 55,
+    recency: 60,
+    desc: 'Лендинг с интеграцией amoCRM',
+    kworkUrl: 'https://kwork.ru/portfolio/22552936',
+  },
+  {
+    id: 'k23569177',
+    title: 'Сайт для сервера PoligPig',
+    client: 'Kwork',
+    month: 'Aug 2026',
+    stack: ['Next.js', 'Tailwind', 'Vercel'],
+    type: 'shop',
+    scope: 70,
+    recency: 95,
+    desc: 'Игровой сервер + каталог + донат',
+    kworkUrl: 'https://kwork.ru/portfolio/23569177',
+  },
+  {
+    id: 'k23570036',
+    title: 'Сайт для бренда одежды',
+    client: 'Kwork',
+    month: 'Aug 2026',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    type: 'shop',
+    scope: 85,
+    recency: 95,
+    desc: 'Каталог + корзина + онлайн-оплата',
+    kworkUrl: 'https://kwork.ru/portfolio/23570036',
+  },
+]
+
 export const process = [
   {
     step: '01',
