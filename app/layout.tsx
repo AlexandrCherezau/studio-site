@@ -33,6 +33,18 @@ export default function RootLayout({
             CORS request from inside the viewer. */}
         <link rel="preconnect" href="https://my.spline.design" />
         <link rel="preconnect" href="https://prod.spline.design" crossOrigin="anonymous" />
+        {/* ponytail: dark is the default theme — paint .dark on <html>
+            before React hydrates to avoid the flash of light bg on
+            first load. Reads localStorage 'theme' so the toggle still
+            wins if the user has picked light. The script runs sync in
+            <head>, blocking the first paint by ~0.1ms in exchange for
+            no FOUC. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){document.documentElement.classList.add('dark')}})();",
+          }}
+        />
       </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
