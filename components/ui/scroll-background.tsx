@@ -1,24 +1,24 @@
 'use client'
 
-// ponytail: fixed-position ColorBends backdrop that's visible while
-// the user is scrolling through the content sections (between hero
-// and footer). rAF + scrollY, no IntersectionObserver — we need a
-// continuous opacity curve, not a binary is-visible flag.
+// ponytail: fixed-position ColorBends backdrop that fades in as the
+// reader leaves the hero and fades out before they hit the footer.
+// Uses rAF + scrollY, not IntersectionObserver, because we need a
+// continuous opacity curve (not a binary is-visible flag). The cost
+// is one scroll-read per frame — already paid by the reading-progress
+// bar elsewhere, so no new layout thrash.
 import { useEffect, useRef, useState } from 'react'
 import { ColorBends } from '@/components/ui/color-bends'
 
-// Bright example palette from react-bits docs — pink / purple / cyan
-// in an additive overlay gives an iridescent wash that reads as
-// "background" on both light and dark themes.
-const COLORS = ['#ff5c7a', '#8a5cff', '#00ffd1', '#ff5c7a']
+// Mid-tone palette that shows on both light and dark themes with
+// mix-blend-mode: overlay — saturated enough to be felt, soft enough
+// not to fight the editorial type.
+const COLORS = ['#6366f1', '#22d3ee', '#a855f7', '#f472b6']
 
 function shouldSkipForHardware(): boolean {
   if (typeof navigator === 'undefined') return true
-  // ponytail: same gate as Spline — hero already uses one WebGL
-  // context, so a second full-screen WebGL pass on a fan-less
-  // laptop turns into dropped frames. Bumping the bar to 6GB / 4
-  // cores to match what desktop browsers report on M-series Macs
-  // and modern ultrabooks.
+  // ponytail: same gate as Spline — single WebGL context already taken
+  // by Spline in the hero, so adding another on weak devices is what
+  // makes a fan-less laptop stutter.
   const mem = (navigator as Navigator & { deviceMemory?: number })
     .deviceMemory
   const cores = navigator.hardwareConcurrency
@@ -49,16 +49,16 @@ export function ScrollBackground() {
     const tick = () => {
       const y = window.scrollY
       const vh = window.innerHeight
-      // Fade in as the reader leaves the hero (one viewport down),
-      // hold through the content sections, fade out in the last
-      // viewport before the bottom (so the contact section — which
-      // has its own bg — reads as the finale, not the page bg).
-      const fadeIn = Math.min(1, Math.max(0, (y - vh * 0.6) / (vh * 0.4)))
+      // Fade in from 50% to 100% of the hero (one screen down).
+      const fadeIn = Math.min(1, Math.max(0, (y - vh * 0.5) / (vh * 0.5)))
+      // Fade out in the last viewport before the bottom (so the
+      // contact section — which has its own bg — reads as the finale).
       const fromBottom = document.documentElement.scrollHeight - vh - y
       const fadeOut = Math.min(1, Math.max(0, fromBottom / vh))
-      const target = Math.min(fadeIn, fadeOut) * 0.9
-      // ponytail: write directly to style.opacity, skip React
-      // re-render — fires every frame, no need to round-trip.
+      const target = Math.min(fadeIn, fadeOut) * 0.55
+      // ponytail: write directly to style.opacity and skip a React
+      // re-render — this fires every frame, no need to round-trip
+      // through the reconciler.
       node.style.opacity = target.toFixed(3)
       raf = requestAnimationFrame(tick)
     }
@@ -77,18 +77,9 @@ export function ScrollBackground() {
     >
       <ColorBends
         colors={COLORS}
-        rotation={90}
-        speed={0.2}
-        scale={1}
-        frequency={1}
-        warpStrength={1}
-        mouseInfluence={1}
-        parallax={0.5}
-        noise={0.15}
-        iterations={1}
-        intensity={1.8}
-        bandWidth={6}
-        transparent
+        speed={0.18}
+        intensity={0.9}
+        warpStrength={1.3}
       />
     </div>
   )

@@ -1,32 +1,23 @@
 'use client'
 
-// Ported from react-bits.dev Backgrounds/ColorBends (JS-CSS variant,
-// converted to TypeScript + Tailwind utility). All 15 visual props
-// exposed — see react-bits docs for the meaning of each. The ResizeObserver
-// path, WebGL context lifecycle (forceContextLoss + cancelAnimationFrame)
-// and pointermove tracking are kept verbatim — they're the part that
-// prevents GPU leaks on unmount and that's the whole reason to vendor
-// a copy instead of importing.
+// Ported from react-bits.dev Backgrounds/ColorBends (TS-TW).
+// Ponytail: dropped props we don't tune (rotation, autoRotate, scale,
+// frequency, mouseInfluence, parallax, noise, iterations, bandWidth) —
+// defaults match the upstream visual. Kept `colors`, `speed`, `intensity`,
+// `warpStrength`, `transparent`, `className`, `style` since those drive
+// the look. The original ResizeObserver + cancelAnimationFrame cleanup
+// is kept verbatim — it's the bit that prevents GPU leaks on unmount.
 import React, { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
 type ColorBendsProps = {
   className?: string
   style?: React.CSSProperties
-  rotation?: number
   speed?: number
   colors?: string[]
   transparent?: boolean
-  autoRotate?: number
-  scale?: number
-  frequency?: number
   warpStrength?: number
-  mouseInfluence?: number
-  parallax?: number
-  noise?: number
-  iterations?: number
   intensity?: number
-  bandWidth?: number
 }
 
 const MAX_COLORS = 8 as const
@@ -137,28 +128,17 @@ void main() {
 export function ColorBends({
   className,
   style,
-  rotation = 90,
   speed = 0.2,
   colors = [],
   transparent = true,
-  autoRotate = 0,
-  scale = 1,
-  frequency = 1,
   warpStrength = 1,
-  mouseInfluence = 1,
-  parallax = 0.5,
-  noise = 0.15,
-  iterations = 1,
   intensity = 1.5,
-  bandWidth = 6,
 }: ColorBendsProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
   const rafRef = useRef<number | null>(null)
   const materialRef = useRef<THREE.ShaderMaterial | null>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
-  const rotationRef = useRef(rotation)
-  const autoRotateRef = useRef(autoRotate)
   const pointerTargetRef = useRef(new THREE.Vector2(0, 0))
   const pointerCurrentRef = useRef(new THREE.Vector2(0, 0))
 
@@ -184,16 +164,16 @@ export function ColorBends({
         uColorCount: { value: 0 },
         uColors: { value: uColorsArray },
         uTransparent: { value: transparent ? 1 : 0 },
-        uScale: { value: scale },
-        uFrequency: { value: frequency },
+        uScale: { value: 1 },
+        uFrequency: { value: 1 },
         uWarpStrength: { value: warpStrength },
         uPointer: { value: new THREE.Vector2(0, 0) },
-        uMouseInfluence: { value: mouseInfluence },
-        uParallax: { value: parallax },
-        uNoise: { value: noise },
-        uIterations: { value: iterations },
+        uMouseInfluence: { value: 1 },
+        uParallax: { value: 0.5 },
+        uNoise: { value: 0.15 },
+        uIterations: { value: 1 },
         uIntensity: { value: intensity },
-        uBandWidth: { value: bandWidth },
+        uBandWidth: { value: 6 },
       },
       premultipliedAlpha: true,
       transparent: true,
@@ -240,13 +220,6 @@ export function ColorBends({
       const dt = clock.getDelta()
       const elapsed = clock.elapsedTime
       material.uniforms.uTime.value = elapsed
-
-      const deg = (rotationRef.current % 360) + autoRotateRef.current * elapsed
-      const rad = (deg * Math.PI) / 180
-      const c = Math.cos(rad)
-      const s = Math.sin(rad)
-      ;(material.uniforms.uRot.value as THREE.Vector2).set(c, s)
-
       const cur = pointerCurrentRef.current
       const tgt = pointerTargetRef.current
       const amt = Math.min(1, dt * 8)
@@ -268,7 +241,7 @@ export function ColorBends({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
       if (ro) ro.disconnect()
-      else globalThis.removeEventListener('resize', handleResize)
+      else window.removeEventListener('resize', handleResize)
       container.removeEventListener('pointermove', handlePointerMove)
       geometry.dispose()
       material.dispose()
@@ -278,37 +251,16 @@ export function ColorBends({
         container.removeChild(renderer.domElement)
       }
     }
-  }, [
-    speed,
-    scale,
-    frequency,
-    warpStrength,
-    mouseInfluence,
-    parallax,
-    noise,
-    iterations,
-    intensity,
-    bandWidth,
-    transparent,
-  ])
+  }, [speed, warpStrength, intensity, transparent])
 
-  // Sync live prop changes (rotation/autoRotate/colors) without a
-  // full WebGL teardown.
+  // Sync prop changes that don't warrant tearing down the renderer.
   useEffect(() => {
     const material = materialRef.current
     if (!material) return
-    rotationRef.current = rotation
-    autoRotateRef.current = autoRotate
     material.uniforms.uSpeed.value = speed
-    material.uniforms.uScale.value = scale
-    material.uniforms.uFrequency.value = frequency
     material.uniforms.uWarpStrength.value = warpStrength
-    material.uniforms.uMouseInfluence.value = mouseInfluence
-    material.uniforms.uParallax.value = parallax
-    material.uniforms.uNoise.value = noise
-    material.uniforms.uIterations.value = iterations
     material.uniforms.uIntensity.value = intensity
-    material.uniforms.uBandWidth.value = bandWidth
+    material.uniforms.uTransparent.value = transparent ? 1 : 0
 
     const toVec3 = (hex: string) => {
       const h = hex.replace('#', '').trim()
@@ -335,23 +287,7 @@ export function ColorBends({
       else vec.set(0, 0, 0)
     }
     material.uniforms.uColorCount.value = arr.length
-    material.uniforms.uTransparent.value = transparent ? 1 : 0
-  }, [
-    rotation,
-    autoRotate,
-    speed,
-    scale,
-    frequency,
-    warpStrength,
-    mouseInfluence,
-    parallax,
-    noise,
-    iterations,
-    intensity,
-    bandWidth,
-    colors,
-    transparent,
-  ])
+  }, [colors, speed, warpStrength, intensity, transparent])
 
   return (
     <div
