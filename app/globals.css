@@ -294,3 +294,29 @@
     animation: none !important;
   }
 }
+
+/* ponytail: minimal scroll-driven backdrop. Two stacked
+   radial-gradients form a faint dot grid (24px spacing, 1.5px
+   dots) over a wider soft halo. Both layers drift at different
+   periods via @keyframes — pure compositor work, zero JS per
+   frame. mix-blend-mode: overlay keeps it subtle against both
+   light and dark section backgrounds. */
+.scroll-bg {
+  background-image:
+    radial-gradient(circle at center, currentColor 1.5px, transparent 1.5px),
+    radial-gradient(ellipse 80% 50% at 50% 30%, rgb(99 102 241 / 0.08), transparent 70%);
+  background-size: 24px 24px, 100% 100%;
+  background-position: 0 0, 0 0;
+  color: rgb(99 102 241 / 0.18);
+  mix-blend-mode: overlay;
+  animation: scroll-bg-drift 60s linear infinite;
+}
+
+@keyframes scroll-bg-drift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 240px 240px, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-bg { animation: none; }
+}

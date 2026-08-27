@@ -1,33 +1,15 @@
 'use client'
 
-// ponytail: fixed-position Iridescence backdrop that fades in as the
-// reader leaves the hero and fades out before the footer. Uses rAF +
-// scrollY instead of IntersectionObserver because we need a continuous
-// opacity curve, not a binary is-visible flag.
+// ponytail: pure-CSS backdrop — no canvas, no WebGL, no shader, no
+// library. Just a fixed <div> with two layered radial-gradients
+// (dot-grid + faint halo) and a CSS @keyframes pulse. Opacity is the
+// only thing that gets a rAF tick (scroll-position driven).
 //
-// Iridescence over ColorBends: pearl-slick shader vs banded grid-warps.
-// Smaller dep footprint (ogl ~25KB gz vs three ~600KB), single color
-// tint instead of palette, organic vs geometric. Fits the editorial
-// Apple-HIG aesthetic — pearlescent shimmer, not arcade.
+// Why this and not another shader: the site already runs Spline in
+// the hero. Adding a second WebGL pass for a backdrop felt like a
+// GPU tax for decoration. This costs zero JS per frame and zero
+// graphics memory.
 import { useEffect, useRef, useState } from 'react'
-import { Iridescence } from '@/components/ui/iridescence'
-
-// Subtle pearl tint — light cool-purple shifts so the shader's own
-// sine-wave field gives the color variation, not the tint.
-const TINT: [number, number, number] = [0.78, 0.7, 1.0]
-
-function shouldSkipForHardware(): boolean {
-  if (typeof navigator === 'undefined') return true
-  // ponytail: same gate as Spline — single WebGL context already taken
-  // by Spline in the hero, so adding another on weak devices is what
-  // makes a fan-less laptop stutter.
-  const mem = (navigator as Navigator & { deviceMemory?: number })
-    .deviceMemory
-  const cores = navigator.hardwareConcurrency
-  if (mem !== undefined && mem < 6) return true
-  if (cores !== undefined && cores < 4) return true
-  return false
-}
 
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return true
@@ -39,7 +21,7 @@ export function ScrollBackground() {
   const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
-    if (shouldSkipForHardware() || prefersReducedMotion()) return
+    if (prefersReducedMotion()) return
     setEnabled(true)
   }, [])
 
@@ -51,16 +33,13 @@ export function ScrollBackground() {
     const tick = () => {
       const y = window.scrollY
       const vh = window.innerHeight
-      // Fade in as the reader leaves the hero (one viewport down).
+      // Same fade-in / fade-out curve as the previous shader version
+      // so the visual handoff at the section boundaries stays the
+      // same — only the texture changes.
       const fadeIn = Math.min(1, Math.max(0, (y - vh * 0.5) / (vh * 0.5)))
-      // Fade out in the last viewport before the bottom (so the
-      // contact section — which has its own bg — reads as the finale).
       const fromBottom = document.documentElement.scrollHeight - vh - y
       const fadeOut = Math.min(1, Math.max(0, fromBottom / vh))
-      const target = Math.min(fadeIn, fadeOut) * 0.65
-      // ponytail: write directly to style.opacity and skip a React
-      // re-render — this fires every frame, no need to round-trip
-      // through the reconciler.
+      const target = Math.min(fadeIn, fadeOut) * 0.5
       node.style.opacity = target.toFixed(3)
       raf = requestAnimationFrame(tick)
     }
@@ -74,10 +53,11 @@ export function ScrollBackground() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[1] opacity-0"
-      style={{ mixBlendMode: 'overlay' }}
-    >
-      <Iridescence color={TINT} speed={0.6} amplitude={0.2} mouseReact />
-    </div>
+      // Layered radial-gradients: a tight dot grid (4px circles
+      // every 28px) + a wider soft halo. The two layers shift at
+      // different periods via the .bg-drift keyframes — no JS
+      // per-frame work, just the compositor moving two layers.
+      className="scroll-bg pointer-events-none fixed inset-0 z-[1] opacity-0"
+    />
   )
 }
