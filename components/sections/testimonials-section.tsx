@@ -1,11 +1,11 @@
-import { testimonials, lead, partner } from '@/lib/studio'
+import { testimonials, lead } from '@/lib/studio'
 
 // ponytail: Apple HIG print-spread — large quote with attribution
 // underneath. Two quotes side by side on desktop, stacked on mobile.
 // No infinite-marquee animation (was the most "AI-template"-looking
 // element of the previous design); the quotes just sit there as
 // evidence the user can read at their own pace.
-type Quote = { body: string; author: string; service: string; owner: 'lead' | 'partner' }
+type Quote = { body: string; author: string; service: string }
 
 const featured: Quote[] = [
   testimonials.find((t) => t.author === 'gk_perspektiva') ?? testimonials[0],
@@ -14,7 +14,6 @@ const featured: Quote[] = [
   body: t.body,
   author: t.author,
   service: t.service,
-  owner: t.owner,
 }))
 
 export function TestimonialsSection() {
@@ -35,43 +34,40 @@ export function TestimonialsSection() {
             Что говорят заказчики
           </h2>
           <p className="mt-4 text-base text-muted-foreground md:text-lg">
-            Два профиля, рейтинг 5.0. Цитаты живые — ссылки на оригинал
+            Рейтинг 5.0 на Kwork. Цитаты живые — ссылка на оригинал
             в каждой карточке.
           </p>
         </div>
 
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
-          {featured.map((q, i) => {
-            const handle = q.owner === 'lead' ? lead.handle : partner.handle
-            return (
-              <figure key={i} className="view-reveal">
-                <div
-                  aria-hidden
-                  className="font-serif text-6xl leading-none text-foreground/30 md:text-7xl"
-                >
-                  «
-                </div>
-                <blockquote className="-mt-4 text-xl font-medium leading-snug text-foreground md:text-2xl">
-                  {q.body}
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3 text-sm">
-                  <span className="font-medium text-foreground">
-                    {q.author}
-                  </span>
-                  <span aria-hidden className="text-muted-foreground">·</span>
-                  <span className="text-muted-foreground">{q.service}</span>
-                  <span aria-hidden className="text-muted-foreground">·</span>
-                  <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                    @{handle}
-                  </span>
-                </figcaption>
-              </figure>
-            )
-          })}
+          {featured.map((q, i) => (
+            <figure key={i} className="view-reveal">
+              <div
+                aria-hidden
+                className="font-serif text-6xl leading-none text-foreground/30 md:text-7xl"
+              >
+                «
+              </div>
+              <blockquote className="-mt-4 text-xl font-medium leading-snug text-foreground md:text-2xl">
+                {q.body}
+              </blockquote>
+              <figcaption className="mt-6 flex items-center gap-3 text-sm">
+                <span className="font-medium text-foreground">
+                  {q.author}
+                </span>
+                <span aria-hidden className="text-muted-foreground">·</span>
+                <span className="text-muted-foreground">{q.service}</span>
+                <span aria-hidden className="text-muted-foreground">·</span>
+                <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  @{lead.handle}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
 
         <p className="view-reveal mt-16 max-w-md text-sm text-muted-foreground">
-          Все отзывы — на страницах профилей:{' '}
+          Все отзывы — на странице профиля:{' '}
           <a
             href={lead.kworkUrl}
             target="_blank"
@@ -79,15 +75,6 @@ export function TestimonialsSection() {
             className="underline-offset-4 hover:text-foreground hover:underline"
           >
             @{lead.handle}
-          </a>{' '}
-          ·{' '}
-          <a
-            href={partner.kworkUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline-offset-4 hover:text-foreground hover:underline"
-          >
-            @{partner.handle}
           </a>
         </p>
       </div>

@@ -1,4 +1,4 @@
-import { services, lead, partner, type Service } from '@/lib/studio'
+import { services, lead } from '@/lib/studio'
 import {
   Bot,
   Server,
@@ -11,13 +11,6 @@ import {
 
 // ponytail: icons mapped to service order; reorder freely.
 const ICONS: LucideIcon[] = [Bot, Server, Globe, Sparkles, Database, Wrench]
-
-function ownerLabel(owner: Service['owner']): { name: string; url: string } {
-  if (owner === 'lead') return { name: `@${lead.handle}`, url: lead.kworkUrl }
-  if (owner === 'partner')
-    return { name: `@${partner.handle}`, url: partner.kworkUrl }
-  return { name: 'lead + partner', url: '#team' }
-}
 
 export function ServicesSection() {
   return (
@@ -36,15 +29,14 @@ export function ServicesSection() {
             Шесть направлений, под&nbsp;которыми есть живые заказы
           </h2>
           <p className="mt-4 text-base text-muted-foreground md:text-lg">
-            Имя у каждой услуги — кто из нас её закрывает. Никаких
-            «менеджер уточнит» — общаетесь напрямую с тем, кто пишет код.
+            Все услуги закрывает Александр. Никаких «менеджер
+            уточнит» — общаетесь напрямую с тем, кто пишет код.
           </p>
         </div>
 
         <div className="grid gap-px overflow-hidden rounded-2xl border border-border/60 bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, idx) => {
             const Icon = ICONS[idx] ?? Sparkles
-            const owner = ownerLabel(service.owner)
             return (
               <div
                 key={service.title}
@@ -53,7 +45,7 @@ export function ServicesSection() {
                 <div className="flex items-center justify-between">
                   <Icon className="size-5 text-foreground/70" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                    {owner.name}
+                    @{lead.handle}
                   </span>
                 </div>
 
@@ -65,9 +57,9 @@ export function ServicesSection() {
                 </p>
 
                 <a
-                  href={owner.url}
-                  target={owner.url.startsWith('http') ? '_blank' : undefined}
-                  rel={owner.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  href={lead.kworkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center gap-2 text-xs font-medium text-foreground underline-offset-4 transition-opacity hover:opacity-70"
                 >
                   Открыть в Kwork

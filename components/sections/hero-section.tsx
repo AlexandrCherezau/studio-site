@@ -1,7 +1,7 @@
 import { SplineViewer } from '@/components/ui/spline-viewer'
 import { buttonVariants } from '@/components/ui/button'
-import { SCENE_VIEWER_URL, lead, partner } from '@/lib/studio'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { SCENE_VIEWER_URL, lead } from '@/lib/studio'
+import { ArrowRight } from 'lucide-react'
 
 export function HeroSection() {
   return (
@@ -17,7 +17,7 @@ export function HeroSection() {
       {/* Top-left: studio mark. Plain text, no pill. pointer-events:none
           so the iframe keeps cursor-follow when cursor crosses it. */}
       <div className="pointer-events-none absolute left-6 top-6 z-10 font-mono text-xs uppercase tracking-[0.2em] text-white/70 md:left-10 md:top-10">
-        {lead.name} · {partner.name}{' '}
+        {lead.name}
         <span className="text-white/40">/ studio</span>
       </div>
 
@@ -37,8 +37,8 @@ export function HeroSection() {
           real focus ring. z-20 keeps them above the gradient fade. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-20 z-20 mx-auto flex max-w-sm flex-col items-stretch gap-4 px-6 md:inset-x-auto md:right-10 md:bottom-40 md:mx-0 md:max-w-sm md:items-end md:px-0">
         <p className="text-pretty text-center text-base text-white/85 md:text-right md:text-lg">
-          Два fullstack-разработчика с рейтингом 5.0 на Kwork. Без менеджеров
-          и подрядчиков — общаетесь напрямую с теми, кто пишет код. Деплой
+          Fullstack-разработчик с рейтингом 5.0 на Kwork. Без менеджеров
+          и подрядчиков — общаетесь напрямую с тем, кто пишет код. Деплой
           на вашем сервере, исходники — ваши.
         </p>
         <div className="flex flex-col gap-2 md:flex-row md:flex-wrap">

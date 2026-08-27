@@ -1,4 +1,4 @@
-import { lead, partner, type TeamMember } from '@/lib/studio'
+import { lead } from '@/lib/studio'
 import { Star } from 'lucide-react'
 
 // ponytail: lucide-react no longer ships a GitHub glyph in this version —
@@ -16,104 +16,6 @@ function GithubIcon({ className }: { className?: string }) {
   )
 }
 
-function MemberCard({ member, featured }: { member: TeamMember; featured: boolean }) {
-  return (
-    // ponytail: team cards use a different visual language than services
-    // cards — no per-card border, a thin top hairline + a soft inset
-    // shadow instead. Apple HIG "depth via layering" rather than borders.
-    <article className="h-full rounded-2xl bg-background p-8 ring-1 ring-foreground/[0.06] md:p-10">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-2xl font-semibold tracking-tight">
-            {member.name}
-          </h3>
-          <a
-            href={member.kworkUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            @{member.handle}
-          </a>
-        </div>
-        <div className="flex items-center gap-1 font-mono text-xs">
-          <Star className="size-3 fill-current" />
-          <span className="font-medium">{member.stats.rating.toFixed(1)}</span>
-          <span className="text-muted-foreground">
-            · {member.stats.reviews}
-          </span>
-        </div>
-      </div>
-
-      <p className="mt-6 text-base font-medium text-foreground/90">
-        {member.tagline}
-      </p>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-        {member.bio}
-      </p>
-
-      <ul className="mt-6 grid gap-1.5 text-xs text-muted-foreground sm:grid-cols-2">
-        {member.stack.map((tech) => (
-          <li key={tech} className="flex items-start gap-2">
-            <span className="mt-1.5 size-1 shrink-0 rounded-full bg-foreground/30" />
-            <span>{tech}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/40 pt-5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-        <span>{member.stats.orders} заказов</span>
-        <span aria-hidden>·</span>
-        <span>{member.stats.completion}% сдано</span>
-        <span aria-hidden>·</span>
-        <span>{member.stats.onTime}% вовремя</span>
-        {member.stats.repeat > 0 && (
-          <>
-            <span aria-hidden>·</span>
-            <span>{member.stats.repeat}% повторных</span>
-          </>
-        )}
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        <a
-          href={member.kworkUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-md border border-foreground/20 bg-foreground/[0.06] px-3 py-1.5 text-xs font-medium text-foreground transition-all duration-150 hover:border-foreground/40 hover:bg-foreground/[0.12]"
-        >
-          Профиль на Kwork
-          <svg
-            width="9"
-            height="9"
-            viewBox="0 0 12 12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            className="transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-          >
-            <path d="M3 9 L9 3 M5 3 L9 3 L9 7" />
-          </svg>
-        </a>
-        {member.githubUrl && (
-          <a
-            href={member.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all duration-150 hover:border-foreground/30 hover:bg-muted/50 hover:text-foreground"
-          >
-            <GithubIcon className="size-3.5" />
-            GitHub
-          </a>
-        )}
-      </div>
-    </article>
-  )
-}
-
 export function TeamSection() {
   return (
     // ponytail: bg-muted/30 alternates with services above (bg-background)
@@ -125,24 +27,108 @@ export function TeamSection() {
       <div className="mx-auto max-w-6xl">
         <div className="view-reveal mb-16 max-w-2xl">
           <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            02 — Команда
+            02 — Обо мне
           </div>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
-            Два человека, рейтинг 5.0, ноль посредников
+            Fullstack-разработчик с рейтингом 5.0 на Kwork
           </h2>
           <p className="mt-4 text-base text-muted-foreground md:text-lg">
-            Работаем вместе, отвечаем лично, деплоим на вашем сервере.
-            Исходники и инфраструктура — ваши, не подписка на чужой SaaS.
+            Отвечаю лично, деплою на вашем сервере. Исходники и
+            инфраструктура — ваши, не подписка на чужой SaaS.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-5">
-          <div className="view-reveal lg:col-span-3">
-            <MemberCard member={lead} featured />
-          </div>
-          <div className="view-reveal lg:col-span-2">
-            <MemberCard member={partner} featured={false} />
-          </div>
+        <div className="view-reveal max-w-3xl">
+          <article className="rounded-2xl bg-background p-8 ring-1 ring-foreground/[0.06] md:p-10">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="text-2xl font-semibold tracking-tight">
+                  {lead.name}
+                </h3>
+                <a
+                  href={lead.kworkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  @{lead.handle}
+                </a>
+              </div>
+              <div className="flex items-center gap-1 font-mono text-xs">
+                <Star className="size-3 fill-current" />
+                <span className="font-medium">{lead.stats.rating.toFixed(1)}</span>
+                <span className="text-muted-foreground">
+                  · {lead.stats.reviews}
+                </span>
+              </div>
+            </div>
+
+            <p className="mt-6 text-base font-medium text-foreground/90">
+              {lead.tagline}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {lead.bio}
+            </p>
+
+            <ul className="mt-6 grid gap-1.5 text-xs text-muted-foreground sm:grid-cols-2">
+              {lead.stack.map((tech) => (
+                <li key={tech} className="flex items-start gap-2">
+                  <span className="mt-1.5 size-1 shrink-0 rounded-full bg-foreground/30" />
+                  <span>{tech}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/40 pt-5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+              <span>{lead.stats.orders} заказов</span>
+              <span aria-hidden>·</span>
+              <span>{lead.stats.completion}% сдано</span>
+              <span aria-hidden>·</span>
+              <span>{lead.stats.onTime}% вовремя</span>
+              {lead.stats.repeat > 0 && (
+                <>
+                  <span aria-hidden>·</span>
+                  <span>{lead.stats.repeat}% повторных</span>
+                </>
+              )}
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <a
+                href={lead.kworkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-md border border-foreground/20 bg-foreground/[0.06] px-3 py-1.5 text-xs font-medium text-foreground transition-all duration-150 hover:border-foreground/40 hover:bg-foreground/[0.12]"
+              >
+                Профиль на Kwork
+                <svg
+                  width="9"
+                  height="9"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                  className="transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                >
+                  <path d="M3 9 L9 3 M5 3 L9 3 L9 7" />
+                </svg>
+              </a>
+              {lead.githubUrl && (
+                <a
+                  href={lead.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all duration-150 hover:border-foreground/30 hover:bg-muted/50 hover:text-foreground"
+                >
+                  <GithubIcon className="size-3.5" />
+                  GitHub
+                </a>
+              )}
+            </div>
+          </article>
         </div>
       </div>
     </section>

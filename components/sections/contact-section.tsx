@@ -1,4 +1,4 @@
-import { lead, partner } from '@/lib/studio'
+import { lead } from '@/lib/studio'
 import { buttonVariants } from '@/components/ui/button'
 
 export function ContactSection() {
@@ -21,7 +21,7 @@ export function ContactSection() {
           Готовы начать?
         </h2>
         <p className="view-reveal mx-auto mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
-          Напишите в личку на Kwork — ответим в течение дня с оценкой
+          Напишите в личку на Kwork — отвечу в течение дня с оценкой
           сроков и стоимости. Если задача типовая — берите кворк со
           страницы выше.
         </p>
@@ -39,9 +39,7 @@ export function ContactSection() {
             Написать @{lead.handle}
           </a>
           <a
-            href={partner.kworkUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#gigs"
             className={buttonVariants({
               size: 'lg',
               variant: 'outline',
@@ -49,7 +47,7 @@ export function ContactSection() {
                 'border-foreground/30 bg-transparent text-foreground hover:bg-foreground/10',
             })}
           >
-            Написать @{partner.handle}
+            Смотреть кворки
           </a>
         </div>
       </div>

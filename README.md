@@ -1,8 +1,8 @@
-# site3d — студия Александра и Ильи
+# site3d — портфолио Александра
 
 ![hero](./public/hero.gif)
 
-Лендинг двух-person dev-студии (fullstack + AI) на Next.js. Цель страницы — превращать визитёров в заказчиков на Kwork.
+Лендинг fullstack-разработчика (боты, парсеры, AI, SaaS) на Next.js. Цель страницы — превращать визитёров в заказчиков на Kwork.
 
 [**Открыть live →**](https://site3d-rrrg23886-7973s-projects.vercel.app/)
 
@@ -16,12 +16,13 @@
 |--------|------------|
 | Hero | 3D-сцена (Spline) + benefit-led заголовок + CTA |
 | Marquee | Бегущая лента услуг и стека |
-| Услуги | 6 направлений с указанием исполнителя (lead / partner / оба) |
-| Команда | Два профиля с рейтингом 5.0 на Kwork |
+| Услуги | 6 направлений — все закрываются одним человеком |
+| Обо мне | Профиль с рейтингом 5.0 на Kwork |
 | Кворки | 9 готовых предложений с фиксированной ценой (editorial list) |
 | Отзывы | Две большие цитаты в print-spread стиле |
+| Кейсы | 2×2 grid с реальными Kwork-превью |
 | Процесс | Три шага — скоуп / сборка / сдача |
-| Контакт | Финальный CTA в инвертированном dark-стиле |
+| Контакт | Финальный CTA |
 
 ## Стек
 
@@ -49,25 +50,24 @@
 ### 2. Spline с lazy-load и device-gate
 
 - `<link rel="preconnect">` для `my.spline.design` и `prod.spline.design` — экономим DNS+TLS round-trip.
+- `<link rel="preload">` главного runtime-чанка (`~350KB`) — браузер стартует загрузку параллельно с парсингом HTML, а не ждёт mount iframe'а. Повторные визиты — cache hit.
 - `requestAnimationFrame → requestIdleCallback(..., { timeout: 1500 })` перед `iframe.src` — defer past first paint.
 - Скелет-плейсхолдер с pulse-анимацией (`opacity 0.6 → 1 → 0.6`, 2.4s, compositor-only).
 - **Device gate**: если `navigator.deviceMemory < 4` или `hardwareConcurrency < 4` (слабые устройства / интегрированная графика), iframe **не загружается вообще**. Поасер остаётся финальным состоянием с текстом «3D недоступно на этом устройстве». Экономит CPU/GPU на ноутах, где 3D гарантированно ступит.
-- iframe `background: #000` (opaque) на элементе — чтобы Spline viewer page не моргнул белым во время загрузки.
 
 ### 3. Apple HIG дизайн-пасс
 
-- **Eyebrow-маркеры** («01 — Что делаем», «02 — Команда»...) над каждым H2 — журнальный ритм.
-- **Alternating backgrounds**: bg-background → bg-muted/30 → bg-background → ... → bg-foreground (контакт). Цвет сам работает разделителем, без `border-t` на каждой секции.
+- **Eyebrow-маркеры** («01 — Что делаем», «02 — Обо мне»...) над каждым H2 — журнальный ритм.
+- **Alternating backgrounds**: bg-background → bg-muted/30 → bg-background → ... → bg-foreground/[0.04] (контакт). Цвет сам работает разделителем, без `border-t` на каждой секции.
 - **Varied padding** — py-24 / py-28 / py-32 по плотности контента.
-- **Уникализированные карточки**: services — hairline-grid, team — `ring-1 ring-foreground/[0.06]` без border, gigs — editorial hairline-list, process — большие моно-номера как signature.
-- **Testimonials** — две большие цитаты в print-spread стиле вместо 3-колоночной infinite-marquee (был самый шаблонный элемент).
+- **Уникализированные карточки**: services — hairline-grid, gigs — editorial hairline-list, cases — image-grid с реальными Kwork-превью, process — большие моно-номера как signature.
 
 ### 4. Performance
 
 - `prefers-reduced-motion` уважается: все scroll-driven анимации и marquee отключаются одним media-query.
 - Scroll-эффекты (parallax, reveal, header shadow) — все `transform`/`opacity`-only, не запускают layout/paint.
-- Testimonials без бесконечной анимации — `DOM` узлов ×3 меньше.
-- 3D iframe не грузится на слабых устройствах.
+- HTTP-cache для self-hosted ассетов (`Cache-Control: public, max-age=31536000, immutable` через `next.config.ts` headers) — `/3d-models/*`, `/portfolio/*`, `/hero.gif`, `/preview.png` на 1 год.
+- Тёмная тема по умолчанию через inline-script в `<head>` (избегает FOUC) + `next-themes` с поддержкой toggle.
 
 ## Локальный запуск
 
@@ -93,22 +93,24 @@ Vercel auto-detects Next.js, билдит через Turbopack, деплоит �
 
 ```
 app/
-  layout.tsx          # root + preconnect к Spline CDN
+  layout.tsx          # root + preconnect/preload к Spline CDN
   page.tsx            # composition всех секций
   globals.css         # design tokens + scroll-driven CSS
 components/
   layout/             # SiteHeader (sticky), SiteFooter
   sections/           # Hero, Marquee, Services, Team, Gigs,
-                      # Testimonials, Process, Contact
+                      # Testimonials, Cases, Process, Contact
   ui/                 # Button, ScrollProgress, SplineViewer, Card, Spotlight
 lib/
   studio.ts           # single source of truth: copy + config + Kwork URLs
 public/
   3d-models/          # self-hosted fallback для Spline scene
-  preview.png         # README preview (генерится из production)
+  portfolio/          # Kwork case-study preview images
+  hero.gif            # README hero (курсор-фолоу робота)
+  preview.png         # README full-page preview
 ```
 
 ## Лицензия
 
 Код — приватный, владелец — [AlexandrCherezau](https://github.com/AlexandrCherezau).  
-Copy и Kwork-ссылки — по [соответствующим профилям](https://kwork.ru/user/alexandrcherezau) и [партнёра](https://kwork.ru/user/afterburnerr).
+Copy и Kwork-ссылки — по [профилю на Kwork](https://kwork.ru/user/alexandrcherezau).

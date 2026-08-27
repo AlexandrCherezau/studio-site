@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { lead, partner } from '@/lib/studio'
+import { lead } from '@/lib/studio'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 
 const NAV = [
@@ -20,7 +20,7 @@ export function SiteHeader() {
           href="/"
           className="font-semibold tracking-tight text-foreground"
         >
-          {lead.name} · {partner.name}
+          {lead.name}
           <span className="ml-1 text-muted-foreground">.</span>
         </Link>
         <nav className="hidden gap-6 text-sm text-muted-foreground md:flex">
