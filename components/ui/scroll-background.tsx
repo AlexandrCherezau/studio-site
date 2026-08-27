@@ -1,18 +1,20 @@
 'use client'
 
-// ponytail: fixed-position ColorBends backdrop that fades in as the
-// reader leaves the hero and fades out before they hit the footer.
-// Uses rAF + scrollY, not IntersectionObserver, because we need a
-// continuous opacity curve (not a binary is-visible flag). The cost
-// is one scroll-read per frame — already paid by the reading-progress
-// bar elsewhere, so no new layout thrash.
+// ponytail: fixed-position Iridescence backdrop that fades in as the
+// reader leaves the hero and fades out before the footer. Uses rAF +
+// scrollY instead of IntersectionObserver because we need a continuous
+// opacity curve, not a binary is-visible flag.
+//
+// Iridescence over ColorBends: pearl-slick shader vs banded grid-warps.
+// Smaller dep footprint (ogl ~25KB gz vs three ~600KB), single color
+// tint instead of palette, organic vs geometric. Fits the editorial
+// Apple-HIG aesthetic — pearlescent shimmer, not arcade.
 import { useEffect, useRef, useState } from 'react'
-import { ColorBends } from '@/components/ui/color-bends'
+import { Iridescence } from '@/components/ui/iridescence'
 
-// Mid-tone palette that shows on both light and dark themes with
-// mix-blend-mode: overlay — saturated enough to be felt, soft enough
-// not to fight the editorial type.
-const COLORS = ['#6366f1', '#22d3ee', '#a855f7', '#f472b6']
+// Subtle pearl tint — light cool-purple shifts so the shader's own
+// sine-wave field gives the color variation, not the tint.
+const TINT: [number, number, number] = [0.78, 0.7, 1.0]
 
 function shouldSkipForHardware(): boolean {
   if (typeof navigator === 'undefined') return true
@@ -49,13 +51,13 @@ export function ScrollBackground() {
     const tick = () => {
       const y = window.scrollY
       const vh = window.innerHeight
-      // Fade in from 50% to 100% of the hero (one screen down).
+      // Fade in as the reader leaves the hero (one viewport down).
       const fadeIn = Math.min(1, Math.max(0, (y - vh * 0.5) / (vh * 0.5)))
       // Fade out in the last viewport before the bottom (so the
       // contact section — which has its own bg — reads as the finale).
       const fromBottom = document.documentElement.scrollHeight - vh - y
       const fadeOut = Math.min(1, Math.max(0, fromBottom / vh))
-      const target = Math.min(fadeIn, fadeOut) * 0.55
+      const target = Math.min(fadeIn, fadeOut) * 0.65
       // ponytail: write directly to style.opacity and skip a React
       // re-render — this fires every frame, no need to round-trip
       // through the reconciler.
@@ -75,12 +77,7 @@ export function ScrollBackground() {
       className="pointer-events-none fixed inset-0 z-[1] opacity-0"
       style={{ mixBlendMode: 'overlay' }}
     >
-      <ColorBends
-        colors={COLORS}
-        speed={0.18}
-        intensity={0.9}
-        warpStrength={1.3}
-      />
+      <Iridescence color={TINT} speed={0.6} amplitude={0.2} mouseReact />
     </div>
   )
 }
