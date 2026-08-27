@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ScrollBackground } from "@/components/ui/scroll-background"
-import { SideNav } from "@/components/ui/side-nav"
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
@@ -67,7 +66,6 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <ScrollBackground />
-          <SideNav />
           {children}
         </ThemeProvider>
       </body>
