@@ -1,4 +1,5 @@
 import { SplineViewer } from '@/components/ui/spline-viewer'
+import { BlurText } from '@/components/ui/blur-text'
 import { buttonVariants } from '@/components/ui/button'
 import { SCENE_VIEWER_URL, lead } from '@/lib/studio'
 import { ArrowRight } from 'lucide-react'
@@ -25,8 +26,14 @@ export function HeroSection() {
           keeps running when cursor is over the title. On mobile the headline
           moves to the top so it doesn't fight the CTAs for vertical space. */}
       <div className="pointer-events-none absolute left-6 right-6 top-20 z-10 md:left-10 md:right-auto md:top-auto md:bottom-32 md:max-w-md md:p-0">
-        <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-4xl font-bold leading-[1.05] tracking-tight text-transparent md:text-5xl lg:text-6xl">
-          Бот, парсер или SaaS — за 14 дней, не за 3 месяца
+        <h1 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl lg:text-6xl">
+          <BlurText
+            text="Бот, парсер или SaaS — за 14 дней, не за 3 месяца"
+            wordClassName="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent"
+            delay={90}
+            direction="top"
+            stepDuration={0.3}
+          />
         </h1>
       </div>
 

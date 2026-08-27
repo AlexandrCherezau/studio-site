@@ -1,5 +1,6 @@
 import { lead } from '@/lib/studio'
 import { Star } from 'lucide-react'
+import { CountUp } from '@/components/ui/count-up'
 
 // ponytail: lucide-react no longer ships a GitHub glyph in this version —
 // inline an SVG so we don't add a new dependency just for one icon.
@@ -80,15 +81,23 @@ export function TeamSection() {
             </ul>
 
             <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/40 pt-5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-              <span>{lead.stats.orders} заказов</span>
+              <span>
+                <CountUp to={lead.stats.orders} className="tabular-nums" /> заказов
+              </span>
               <span aria-hidden>·</span>
-              <span>{lead.stats.completion}% сдано</span>
+              <span>
+                <CountUp to={lead.stats.completion} className="tabular-nums" />% сдано
+              </span>
               <span aria-hidden>·</span>
-              <span>{lead.stats.onTime}% вовремя</span>
+              <span>
+                <CountUp to={lead.stats.onTime} className="tabular-nums" />% вовремя
+              </span>
               {lead.stats.repeat > 0 && (
                 <>
                   <span aria-hidden>·</span>
-                  <span>{lead.stats.repeat}% повторных</span>
+                  <span>
+                    <CountUp to={lead.stats.repeat} className="tabular-nums" />% повторных
+                  </span>
                 </>
               )}
             </div>

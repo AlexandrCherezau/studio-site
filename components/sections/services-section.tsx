@@ -1,4 +1,5 @@
 import { services, lead } from '@/lib/studio'
+import { BlurText } from '@/components/ui/blur-text'
 import {
   Bot,
   Server,
@@ -26,7 +27,12 @@ export function ServicesSection() {
             01 — Что делаем
           </div>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
-            Шесть направлений, под&nbsp;которыми есть живые заказы
+            <BlurText
+              text="Шесть направлений, под которыми есть живые заказы"
+              delay={80}
+              direction="top"
+              stepDuration={0.3}
+            />
           </h2>
           <p className="mt-4 text-base text-muted-foreground md:text-lg">
             Все услуги закрывает Александр. Никаких «менеджер
