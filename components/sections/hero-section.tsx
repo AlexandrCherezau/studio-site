@@ -1,5 +1,6 @@
 import { SplineViewer } from '@/components/ui/spline-viewer'
 import { BlurText } from '@/components/ui/blur-text'
+import { CornerLabels } from '@/components/ui/corner-labels'
 import { buttonVariants } from '@/components/ui/button'
 import { SCENE_VIEWER_URL, lead } from '@/lib/studio'
 import { ArrowRight } from 'lucide-react'
@@ -15,12 +16,15 @@ export function HeroSection() {
         className="absolute inset-0 h-full w-full"
       />
 
-      {/* Top-left: studio mark. Plain text, no pill. pointer-events:none
-          so the iframe keeps cursor-follow when cursor crosses it. */}
-      <div className="pointer-events-none absolute left-6 top-6 z-10 font-mono text-xs uppercase tracking-[0.2em] text-white/70 md:left-10 md:top-10">
-        {lead.name}
-        <span className="text-white/40">/ studio</span>
-      </div>
+      {/* Corner labels — firecrawl.dev pattern: bracketed status
+          markers at all four corners. Pure decoration, pointer-
+          events:none so the iframe keeps cursor-follow. */}
+      <CornerLabels
+        topLeft={`[ ${lead.name.toLowerCase()} · studio ]`}
+        topRight="[ 5.0 ★ · kwork ]"
+        bottomLeft="[ отвечу за 24ч ]"
+        bottomRight="[ solo · с 2020 ]"
+      />
 
       {/* Bottom-left: big headline. pointer-events:none so cursor-follow
           keeps running when cursor is over the title. On mobile the headline
